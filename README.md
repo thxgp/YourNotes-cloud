@@ -154,6 +154,7 @@ curl -H "Authorization: Bearer <clerk_session_token>" \
 - [x] Secrets in environment variables
 - [x] No hardcoded credentials
 - [x] Incident response plan documented
+- [x] Structured request logging for monitoring
 
 ## 📄 License
 
