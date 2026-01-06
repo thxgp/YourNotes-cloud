@@ -5,11 +5,15 @@ const cors = require("cors");
 const protectedRoutes = require("../routes/protected");
 const notesRoutes = require("../routes/notes");
 
+// Import middleware
+const { requestLogger } = require("../middleware/requestLogger");
+
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(requestLogger);
 
 // Health check endpoint
 app.get("/", (req, res) => {
