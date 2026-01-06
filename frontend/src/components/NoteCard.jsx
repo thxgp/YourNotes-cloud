@@ -1,3 +1,7 @@
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Trash2 } from 'lucide-react'
+
 function NoteCard({ note, onDelete }) {
     const formatDate = (dateString) => {
         const date = new Date(dateString)
@@ -17,25 +21,28 @@ function NoteCard({ note, onDelete }) {
     }
 
     return (
-        <div className="note-card">
-            <div className="note-actions">
-                <button
-                    className="btn btn-danger"
-                    onClick={handleDelete}
-                    title="Delete note"
-                >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
-                        <line x1="10" y1="11" x2="10" y2="17" />
-                        <line x1="14" y1="11" x2="14" y2="17" />
-                    </svg>
-                </button>
-            </div>
-
-            <h3 className="note-title">{note.title}</h3>
-            {note.content && <p className="note-content">{note.content}</p>}
-            <p className="note-date">{formatDate(note.created_at)}</p>
-        </div>
+        <Card className="flex flex-col h-full hover:shadow-md transition-shadow">
+            <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
+                <CardTitle className="leading-tight text-xl font-semibold break-words pr-4 line-clamp-2">
+                    {note.title || <span className="text-muted-foreground italic">Untitled</span>}
+                </CardTitle>
+                <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive shrink-0" onClick={handleDelete} title="Delete note">
+                    <Trash2 className="h-4 w-4" />
+                </Button>
+            </CardHeader>
+            <CardContent className="flex-1">
+                {note.content && (
+                    <p className="text-muted-foreground whitespace-pre-wrap line-clamp-6 text-sm">
+                        {note.content}
+                    </p>
+                )}
+            </CardContent>
+            <CardFooter>
+                <p className="text-xs text-muted-foreground">
+                    {formatDate(note.created_at)}
+                </p>
+            </CardFooter>
+        </Card>
     )
 }
 

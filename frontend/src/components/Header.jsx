@@ -1,51 +1,45 @@
 import { SignInButton, SignUpButton, UserButton, useUser } from '@clerk/clerk-react'
 import { Link } from 'react-router-dom'
+import { Button } from "@/components/ui/button"
+import { Shield } from 'lucide-react'
 
 function Header() {
     const { isSignedIn } = useUser()
 
     return (
-        <header className="header">
-            <Link to="/" className="header-logo">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 2L2 7l10 5 10-5-10-5z" fill="url(#grad)" stroke="none" />
-                    <path d="M2 17l10 5 10-5" />
-                    <path d="M2 12l10 5 10-5" />
-                    <defs>
-                        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#6366f1" />
-                            <stop offset="100%" stopColor="#a855f7" />
-                        </linearGradient>
-                    </defs>
-                </svg>
-                SecureNotes
-            </Link>
+        <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <div className="container flex h-16 items-center justify-between">
+                <Link to="/" className="flex items-center gap-2 font-bold text-xl">
+                    <Shield className="h-6 w-6" />
+                    <span>SecureNotes</span>
+                </Link>
 
-            <div className="header-actions">
-                {isSignedIn ? (
-                    <>
-                        <Link to="/dashboard" className="btn btn-secondary">
-                            My Notes
-                        </Link>
-                        <UserButton
-                            afterSignOutUrl="/"
-                            appearance={{
-                                elements: {
-                                    avatarBox: { width: 40, height: 40 }
-                                }
-                            }}
-                        />
-                    </>
-                ) : (
-                    <>
-                        <SignInButton mode="modal">
-                            <button className="btn btn-secondary">Sign In</button>
-                        </SignInButton>
-                        <SignUpButton mode="modal">
-                            <button className="btn btn-primary">Get Started</button>
-                        </SignUpButton>
-                    </>
-                )}
+                <div className="flex items-center gap-4">
+                    {isSignedIn ? (
+                        <>
+                            <Link to="/dashboard">
+                                <Button variant="ghost">My Notes</Button>
+                            </Link>
+                            <UserButton
+                                afterSignOutUrl="/"
+                                appearance={{
+                                    elements: {
+                                        avatarBox: { width: 36, height: 36 }
+                                    }
+                                }}
+                            />
+                        </>
+                    ) : (
+                        <>
+                            <SignInButton mode="modal">
+                                <Button variant="ghost">Sign In</Button>
+                            </SignInButton>
+                            <SignUpButton mode="modal">
+                                <Button>Get Started</Button>
+                            </SignUpButton>
+                        </>
+                    )}
+                </div>
             </div>
         </header>
     )

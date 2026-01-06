@@ -1,14 +1,15 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { SignedIn, SignedOut, useAuth } from '@clerk/clerk-react'
+import { SignedIn, SignedOut } from '@clerk/clerk-react'
 import Landing from './pages/Landing'
 import Dashboard from './pages/Dashboard'
+import CreateNote from './pages/CreateNote'
 import Header from './components/Header'
 
 function App() {
   return (
-    <div className="app">
+    <div className="min-h-screen bg-background text-foreground font-sans antialiased">
       <Header />
-      <main className="main-content">
+      <main>
         <Routes>
           <Route path="/" element={
             <>
@@ -24,6 +25,16 @@ function App() {
             <>
               <SignedIn>
                 <Dashboard />
+              </SignedIn>
+              <SignedOut>
+                <Navigate to="/" replace />
+              </SignedOut>
+            </>
+          } />
+          <Route path="/create-note" element={
+            <>
+              <SignedIn>
+                <CreateNote />
               </SignedIn>
               <SignedOut>
                 <Navigate to="/" replace />

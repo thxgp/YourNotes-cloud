@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '@clerk/clerk-react'
+import { Link } from 'react-router-dom' // Added Link import
 import NoteCard from '../components/NoteCard'
-import NoteForm from '../components/NoteForm'
-import { getNotes, createNote, deleteNote } from '../services/api'
+import { getNotes, deleteNote } from '../services/api'
+import { Button } from "@/components/ui/button"
+import { Plus } from 'lucide-react'
 
 function Dashboard() {
     const { getToken } = useAuth()
     const [notes, setNotes] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState('')
-    const [showForm, setShowForm] = useState(false)
 
     // Fetch notes on mount
     useEffect(() => {
@@ -29,12 +30,6 @@ function Dashboard() {
         }
     }
 
-    const handleCreateNote = async (noteData) => {
-        const data = await createNote(noteData, getToken)
-        setNotes([data.note, ...notes])
-        setShowForm(false)
-    }
-
     const handleDeleteNote = async (noteId) => {
         try {
             await deleteNote(noteId, getToken)
@@ -46,46 +41,37 @@ function Dashboard() {
 
     if (isLoading) {
         return (
-            <div className="dashboard">
-                <div className="loading">
-                    <div className="spinner"></div>
-                </div>
+            <div className="flex items-center justify-center min-h-[50vh]">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
             </div>
         )
     }
 
     return (
-        <div className="dashboard">
-            <div className="dashboard-header">
-                <h1 className="dashboard-title">My Notes</h1>
-                <button
-                    className="btn btn-primary"
-                    onClick={() => setShowForm(true)}
-                >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <line x1="12" y1="5" x2="12" y2="19" />
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                    </svg>
-                    New Note
-                </button>
+        <div className="container mx-auto py-10 px-4">
+            <div className="flex items-center justify-between mb-8">
+                <h1 className="text-3xl font-bold tracking-tight">My Notes</h1>
+                <Link to="/create-note">
+                    <Button>
+                        <Plus className="mr-2 h-4 w-4" />
+                        New Note
+                    </Button>
+                </Link>
             </div>
 
-            {error && <div className="error-message">{error}</div>}
+            {error && <div className="bg-destructive/15 text-destructive p-4 rounded-md mb-6">{error}</div>}
 
             {notes.length === 0 ? (
-                <div className="empty-state">
-                    <div className="empty-icon">📝</div>
-                    <h3 className="empty-title">No notes yet</h3>
-                    <p className="empty-desc">Create your first note to get started!</p>
-                    <button
-                        className="btn btn-primary"
-                        onClick={() => setShowForm(true)}
-                    >
-                        Create Note
-                    </button>
+                <div className="flex flex-col items-center justify-center py-20 text-center border rounded-lg bg-card/50">
+                    <div className="text-4xl mb-4">📝</div>
+                    <h3 className="text-xl font-semibold mb-2">No notes yet</h3>
+                    <p className="text-muted-foreground mb-6">Create your first note to get started!</p>
+                    <Link to="/create-note">
+                        <Button>Create Note</Button>
+                    </Link>
                 </div>
             ) : (
-                <div className="notes-grid">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {notes.map(note => (
                         <NoteCard
                             key={note.id}
@@ -94,13 +80,6 @@ function Dashboard() {
                         />
                     ))}
                 </div>
-            )}
-
-            {showForm && (
-                <NoteForm
-                    onSubmit={handleCreateNote}
-                    onCancel={() => setShowForm(false)}
-                />
             )}
         </div>
     )
