@@ -41,6 +41,16 @@ function App() {
               </SignedOut>
             </>
           } />
+          <Route path="/note/:id" element={
+            <>
+              <SignedIn>
+                <CreateNote />
+              </SignedIn>
+              <SignedOut>
+                <Navigate to="/" replace />
+              </SignedOut>
+            </>
+          } />
         </Routes>
       </main>
     </div>

@@ -61,6 +61,16 @@ export async function createNote(noteData, getToken) {
 }
 
 /**
+ * Update an existing note
+ */
+export async function updateNote(id, noteData, getToken) {
+    return apiRequest(`/api/notes/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(noteData),
+    }, getToken)
+}
+
+/**
  * Delete a note by ID
  */
 export async function deleteNote(id, getToken) {

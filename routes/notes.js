@@ -134,6 +134,55 @@ router.post("/", requireAuth, async (req, res) => {
 });
 
 /**
+ * PUT /api/notes/:id
+ * Update an existing note
+ * Only owner can update
+ */
+router.put("/:id", requireAuth, async (req, res) => {
+    try {
+        const userId = req.auth.userId;
+        const noteId = req.params.id;
+        const { title, content } = req.body;
+
+        const { data, error } = await supabase
+            .from("notes")
+            .update({
+                title: title?.trim(),
+                content: content // Don't trim HTML content blindly, keep structure
+            })
+            .eq("id", noteId)
+            .eq("user_id", userId)
+            .select()
+            .single();
+
+        if (error) {
+            if (error.code === "PGRST116") {
+                return res.status(404).json({
+                    error: "Not found",
+                    message: "Note not found or you don't have permission to edit it.",
+                });
+            }
+            console.error("Supabase error updating note:", error);
+            return res.status(500).json({
+                error: "Database error",
+                message: "Failed to update note",
+            });
+        }
+
+        res.json({
+            message: "Note updated successfully",
+            note: data,
+        });
+    } catch (error) {
+        console.error("Error updating note:", error);
+        res.status(500).json({
+            error: "Server error",
+            message: error.message,
+        });
+    }
+});
+
+/**
  * DELETE /api/notes/:id
  * Delete a note (only owner can delete)
  */
