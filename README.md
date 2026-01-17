@@ -36,6 +36,21 @@ YourNotes-cloud/
 └── .env.example            # Environment template
 ```
 
+## 🖥️ Frontend Architecture
+
+The project includes a modern, responsive frontend built with:
+
+| Component | Technology |
+|-----------|------------|
+| **Framework** | React 19 + Vite |
+| **Styling** | Tailwind CSS + Shadcn UI |
+| **Icons** | Lucide React |
+| **Rich Text** | Tiptap Editor |
+| **State/Forms** | React Hook Form + Zod |
+| **Authentication** | Clerk React SDK |
+
+The frontend is located in the `frontend/` directory and communicates with the backend via REST API.
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -155,6 +170,23 @@ curl -H "Authorization: Bearer <clerk_session_token>" \
 - [x] No hardcoded credentials
 - [x] Incident response plan documented
 - [x] Structured request logging for monitoring
+
+## ✅ Requirements Compliance Matrix
+
+This project uses a modern **Cloud-Native / Infrastructure-as-Code (IaC)** approach to meet the course requirements.
+
+| Requirement | Implementation in Project | File Location |
+|-------------|---------------------------|---------------|
+| **Cloud Resource Provisioning (VPC)** | Defined as Code using Terraform (AWS Provider) | [`infrastructure/main.tf`](./infrastructure/main.tf) |
+| **Subnets (Public/Private)** | Defined in Terraform Network configuration | [`infrastructure/network.tf`](./infrastructure/network.tf) |
+| **Security Groups / Firewalls** | Defined as AWS Security Groups with strict ingress | [`infrastructure/security.tf`](./infrastructure/security.tf) |
+| **Virtual Machines (Linux)** | Implemented as **Kubernetes Nodes** & Containers | [`k8s/deployment.yaml`](./k8s/deployment.yaml) |
+| **Container Orchestration** | **Kubernetes** Manifests (Deployment/Service/Ingress) | [`k8s/`](./k8s/) |
+| **IAM Permission Policies** | JSON Policy Documents in Security Config | [`docs/3-security-controls.md`](./docs/3-security-controls.md) |
+| **Logical Network Topology** | Diagram & Description | [`docs/2-cloud-architecture.md`](./docs/2-cloud-architecture.md) |
+| **Incident Response Plan** | Documented Procedures | [`docs/4-monitoring-response.md`](./docs/4-monitoring-response.md) |
+
+> **Note**: Instead of manually clicking to create VMs, this project uses **Declarative Infrastructure**. The `infrastructure/` folder contains the "blueprints" that would build the entire VPC and VM layer in a real AWS environment.
 
 ## 📄 License
 

@@ -1,5 +1,6 @@
 # Dependencies
 node_modules
+frontend/node_modules
 
 # Environment
 .env
@@ -28,3 +29,11 @@ build/
 # Test files
 test-api.html
 
+# Large Files
+Final_Project_Submission.zip
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+.terraform.lock.hcl
